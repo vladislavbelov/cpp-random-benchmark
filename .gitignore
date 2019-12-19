@@ -1,0 +1,9 @@
+# Binary
+cpp-random-benchmark
+cpp-random-benchmark.exe
+
+# Python tools
+*.pyc
+*.pyo
+__pycache__/
+
