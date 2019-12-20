@@ -5,6 +5,21 @@
 #include <string>
 #include <random>
 
+// Provides the simple generator based on the rand() function.
+// Warning: rand() might have non-uniform distribution in some implementations.
+class RandGenerator {
+public:
+    using result_type = unsigned;
+
+    RandGenerator(unsigned seed) {
+        std::srand(seed);
+    }
+
+    result_type operator()() {
+        return std::rand();
+    }
+};
+
 template<typename Generator>
 class Tester {
 public:
@@ -43,6 +58,7 @@ int main() {
     TEST_CASE(std::ranlux24);
     TEST_CASE(std::ranlux48);
     TEST_CASE(std::knuth_b);
+    TEST_CASE(RandGenerator);
 #undef TEST_CASE
     return EXIT_SUCCESS;
 }
