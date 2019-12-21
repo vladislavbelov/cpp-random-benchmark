@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <string>
 #include <random>
 
@@ -9,7 +10,12 @@
 // Warning: rand() might have non-uniform distribution in some implementations.
 class RandGenerator {
 public:
-    using result_type = unsigned;
+    using result_type = int;
+    static constexpr result_type min() { return 0; }
+    static constexpr result_type max() { return RAND_MAX; }
+
+    static_assert(std::numeric_limits<result_type>::max() >= RAND_MAX,
+                  "result_type should be enough to fit RAND_MAX");
 
     RandGenerator(unsigned seed) {
         std::srand(seed);
@@ -36,7 +42,7 @@ public:
             std::chrono::duration_cast<std::chrono::duration<double>>(finish - start);
 
         std::cout << name_ << ": ";
-        std::cout << std::fixed << std::setprecision(3) << time_span.count();
+        std::cout << std::fixed << std::setprecision(3) << time_span.count() / NUMBER_OF_REPEATS;
         std::cout << " s." << std::endl;
     }
 
