@@ -6,9 +6,9 @@
 #include <string>
 #include <random>
 
-// Provides the simple generator based on the rand() function.
+// Provides the simple random engine based on the rand() function.
 // Warning: rand() might have non-uniform distribution in some implementations.
-class RandGenerator {
+class RandEngine {
 public:
     using result_type = int;
     static constexpr result_type min() { return 0; }
@@ -17,7 +17,7 @@ public:
     static_assert(std::numeric_limits<result_type>::max() >= RAND_MAX,
                   "result_type should be enough to fit RAND_MAX");
 
-    RandGenerator(unsigned seed) {
+    RandEngine(unsigned seed) {
         std::srand(seed);
     }
 
@@ -42,8 +42,8 @@ public:
             std::chrono::duration_cast<std::chrono::duration<double>>(finish - start);
 
         std::cout << name_ << ": ";
-        std::cout << std::fixed << std::setprecision(3) << time_span.count() / NUMBER_OF_REPEATS;
-        std::cout << " s." << std::endl;
+        std::cout << std::fixed << std::setprecision(3) << time_span.count() * 1e9 / NUMBER_OF_REPEATS;
+        std::cout << " ns." << std::endl;
     }
 
 private:
@@ -64,7 +64,7 @@ int main() {
     TEST_CASE(std::ranlux24);
     TEST_CASE(std::ranlux48);
     TEST_CASE(std::knuth_b);
-    TEST_CASE(RandGenerator);
+    TEST_CASE(RandEngine);
 #undef TEST_CASE
     return EXIT_SUCCESS;
 }
