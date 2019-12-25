@@ -26,33 +26,34 @@ public:
     }
 };
 
-template<typename Generator>
+template<typename RandomEngine>
 class Tester {
 public:
-    Tester(std::string&& name) : name_(name), generator_(42) {}
+    Tester(std::string&& name) : name_(name), random_engine_(42) {}
 
     void Run() {
         constexpr size_t NUMBER_OF_REPEATS = 100000000;
         auto start = std::chrono::high_resolution_clock::now();
         for (size_t repeat = 0; repeat < NUMBER_OF_REPEATS; ++repeat) {
-            generator_();
+            random_engine_();
         }
         auto finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> time_span =
             std::chrono::duration_cast<std::chrono::duration<double>>(finish - start);
 
+        constexpr double NANOSECONDS_PER_SECOND = 1e9;
         std::cout << name_ << ": ";
-        std::cout << std::fixed << std::setprecision(3) << time_span.count() * 1e9 / NUMBER_OF_REPEATS;
+        std::cout << std::fixed << std::setprecision(3) << time_span.count() / NUMBER_OF_REPEATS * NANOSECONDS_PER_SECOND;
         std::cout << " ns." << std::endl;
     }
 
 private:
     const std::string name_;
-    Generator generator_;
+    RandomEngine random_engine_;
 };
 
 int main() {
-#define TEST_CASE(GENERATOR) Tester<GENERATOR>(#GENERATOR).Run()
+#define TEST_CASE(RANDOM_ENGINE) Tester<RANDOM_ENGINE>(#RANDOM_ENGINE).Run()
 
     TEST_CASE(std::default_random_engine);
     TEST_CASE(std::minstd_rand);
