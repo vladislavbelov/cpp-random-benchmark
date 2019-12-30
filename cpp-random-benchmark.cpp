@@ -46,9 +46,9 @@ public:
         }
 
         constexpr double NANOSECONDS_PER_SECOND = 1e9;
-        std::cout << name_ << ": ";
-        std::cout << std::fixed << std::setprecision(3) << time_span.count() / number_of_repeats * NANOSECONDS_PER_SECOND;
-        std::cout << " ns." << std::endl;
+        std::cout << name_ << ": " << std::fixed << std::setprecision(3)
+                  << time_span.count() / number_of_repeats * NANOSECONDS_PER_SECOND
+                  << " ns/call (total " << time_span.count() << " s)." << std::endl;
     }
 
 protected:
@@ -79,8 +79,9 @@ template<typename Distribution>
 class DistributionTester : public TesterBase
 {
 public:
-    DistributionTester(const std::string& name)
-        : TesterBase(name), random_engine_(42), distribution_()
+    template<typename... Args>
+    DistributionTester(const std::string& name, Args... args)
+        : TesterBase(name), random_engine_(42), distribution_(std::forward<Args>(args)...)
     {}
     ~DistributionTester() override = default;
 
@@ -113,11 +114,19 @@ int main() {
     TEST_CASE(RandEngine);
 #undef TEST_CASE
 
-#define TEST_CASE(DISTRIBUTION) DistributionTester<DISTRIBUTION>(#DISTRIBUTION).Run()
+#define TEST_CASE(DISTRIBUTION, ...) \
+    DistributionTester<DISTRIBUTION>( \
+        #DISTRIBUTION "(" #__VA_ARGS__ ")", __VA_ARGS__).Run()
 
-    TEST_CASE(std::uniform_int_distribution<int>);
-    TEST_CASE(std::uniform_real_distribution<float>);
+    TEST_CASE(std::uniform_int_distribution<int>,
+              std::numeric_limits<int>::min(),
+              std::numeric_limits<int>::max());
+    TEST_CASE(std::uniform_int_distribution<int>, 0, 1);
+    TEST_CASE(std::uniform_int_distribution<int>, 0, 7);
+    TEST_CASE(std::uniform_real_distribution<float>,
+              std::numeric_limits<float>::min(),
+              std::numeric_limits<float>::max());
+    TEST_CASE(std::uniform_real_distribution<float>, 0.0f, 1.0f);
 #undef TEST_CASE
-
     return EXIT_SUCCESS;
 }
