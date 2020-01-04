@@ -127,6 +127,17 @@ int main() {
               std::numeric_limits<float>::min(),
               std::numeric_limits<float>::max());
     TEST_CASE(std::uniform_real_distribution<float>, 0.0f, 1.0f);
+
+    TEST_CASE(std::normal_distribution<float>,
+              /* mean = */ 0.0f, /* standard_deviation = */ 1.0f);
+    TEST_CASE(std::lognormal_distribution<float>,
+              /* mean = */ 0.0f, /* standard_deviation = */ 1.0f);
+    TEST_CASE(std::geometric_distribution<int>, /* probability = */ 0.5f);
+    TEST_CASE(std::gamma_distribution<float>,
+              /* alpha = */ 1.0f, /* beta = */ 1.0f);
+    TEST_CASE(std::poisson_distribution<int>, /* mean = */ 1.0);
+    TEST_CASE(std::student_t_distribution<float>,
+              /* degrees_of_freedom = */ 3.0f);
 #undef TEST_CASE
     return EXIT_SUCCESS;
 }
