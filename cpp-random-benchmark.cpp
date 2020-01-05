@@ -138,6 +138,10 @@ int main() {
     TEST_CASE(std::poisson_distribution<int>, /* mean = */ 1.0);
     TEST_CASE(std::student_t_distribution<float>,
               /* degrees_of_freedom = */ 3.0f);
+    TEST_CASE(std::bernoulli_distribution, /* probability = */ 0.5);
+    TEST_CASE(std::binomial_distribution<int>,
+              /* trials = */ 10, /* probability = */ 0.5);
+    TEST_CASE(std::exponential_distribution<float>, /* lambda = */ 1.0f);
 #undef TEST_CASE
     return EXIT_SUCCESS;
 }
