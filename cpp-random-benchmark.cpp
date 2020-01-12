@@ -1,4 +1,5 @@
 #include <chrono>
+#include <cstddef>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
@@ -34,7 +35,7 @@ public:
 
     void Run() {
         auto start = std::chrono::high_resolution_clock::now();
-        const size_t number_of_repeats = DoRun();
+        const std::size_t number_of_repeats = DoRun();
         auto finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> time_span =
             std::chrono::duration_cast<std::chrono::duration<double>>(finish - start);
@@ -52,7 +53,7 @@ public:
     }
 
 protected:
-    virtual size_t DoRun() { return 0u; }
+    virtual std::size_t DoRun() { return 0u; }
 
     const std::string name_;
 };
@@ -64,9 +65,9 @@ public:
     ~Tester() override = default;
 
 private:
-    size_t DoRun() override {
-        constexpr size_t NUMBER_OF_REPEATS = 100000000;
-        for (size_t repeat = 0; repeat < NUMBER_OF_REPEATS; ++repeat) {
+    std::size_t DoRun() override {
+        constexpr std::size_t NUMBER_OF_REPEATS = 100000000;
+        for (std::size_t repeat = 0; repeat < NUMBER_OF_REPEATS; ++repeat) {
             random_engine_();
         }
         return NUMBER_OF_REPEATS;
@@ -86,9 +87,9 @@ public:
     ~DistributionTester() override = default;
 
 private:
-    size_t DoRun() override {
-        constexpr size_t NUMBER_OF_REPEATS = 100000000;
-        for (size_t repeat = 0; repeat < NUMBER_OF_REPEATS; ++repeat) {
+    std::size_t DoRun() override {
+        constexpr std::size_t NUMBER_OF_REPEATS = 100000000;
+        for (std::size_t repeat = 0; repeat < NUMBER_OF_REPEATS; ++repeat) {
             distribution_(random_engine_);
         }
         return NUMBER_OF_REPEATS;
