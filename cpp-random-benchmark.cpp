@@ -119,6 +119,10 @@ int main() {
     DistributionTester<DISTRIBUTION>( \
         #DISTRIBUTION "(" #__VA_ARGS__ ")", __VA_ARGS__).Run()
 
+    TEST_CASE(std::uniform_int_distribution<std::size_t>,
+              std::numeric_limits<std::size_t>::min(),
+              std::numeric_limits<std::size_t>::max());
+    TEST_CASE(std::uniform_int_distribution<std::size_t>, 0u, 1u);
     TEST_CASE(std::uniform_int_distribution<int>,
               std::numeric_limits<int>::min(),
               std::numeric_limits<int>::max());
@@ -144,5 +148,6 @@ int main() {
               /* trials = */ 10, /* probability = */ 0.5);
     TEST_CASE(std::exponential_distribution<float>, /* lambda = */ 1.0f);
 #undef TEST_CASE
+
     return EXIT_SUCCESS;
 }
