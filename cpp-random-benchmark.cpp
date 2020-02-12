@@ -34,6 +34,9 @@ public:
     virtual ~TesterBase() {}
 
     void Run() {
+        // We need to have a warmup before a real measurement.
+        DoRun();
+
         auto start = std::chrono::high_resolution_clock::now();
         const std::size_t number_of_repeats = DoRun();
         auto finish = std::chrono::high_resolution_clock::now();
