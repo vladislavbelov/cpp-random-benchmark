@@ -64,19 +64,18 @@ protected:
 template<typename RandomEngine>
 class Tester : public TesterBase {
 public:
-    Tester(const std::string& name) : TesterBase(name), random_engine_(42) {}
+    Tester(const std::string& name) : TesterBase(name) {}
     ~Tester() override = default;
 
 private:
     std::size_t DoRun() override {
+        RandomEngine random_engine(42);
         constexpr std::size_t NUMBER_OF_REPEATS = 100000000;
         for (std::size_t repeat = 0; repeat < NUMBER_OF_REPEATS; ++repeat) {
-            random_engine_();
+            random_engine();
         }
         return NUMBER_OF_REPEATS;
     }
-
-    RandomEngine random_engine_;
 };
 
 template<typename Distribution>
